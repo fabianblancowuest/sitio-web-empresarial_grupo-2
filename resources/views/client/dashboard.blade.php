@@ -1,0 +1,117 @@
+@extends('layouts.app')
+@section('title', 'Mis proyectos · CodeBridge')
+
+@section('content')
+
+<section class="py-16 bg-slate-50 dark:bg-slate-900 min-h-screen">
+    <div class="max-w-5xl mx-auto px-6">
+
+        {{-- Encabezado --}}
+        <div class="mb-10">
+            <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 px-3 py-1.5 rounded-full mb-4">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                Panel de cliente
+            </span>
+            <h1 class="font-display text-4xl font-extrabold text-ink dark:text-white">
+                Hola, {{ Auth::user()->name }}
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-2">Acá podés ver el estado de tus proyectos contratados.</p>
+        </div>
+
+        {{-- Stats --}}
+        @php
+            $total      = $orders->count();
+            $pendiente  = $orders->where('status', 'pendiente')->count();
+            $progreso   = $orders->where('status', 'en_progreso')->count();
+            $completado = $orders->where('status', 'completado')->count();
+        @endphp
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-5 py-4">
+                <p class="font-display text-3xl font-extrabold text-ink dark:text-white">{{ $total }}</p>
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Total</p>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/40 px-5 py-4">
+                <p class="font-display text-3xl font-extrabold text-amber-700 dark:text-amber-400">{{ $pendiente }}</p>
+                <p class="text-xs font-medium text-amber-600 dark:text-amber-500 mt-1">Pendientes</p>
+            </div>
+            <div class="bg-brand-50 dark:bg-brand-900/20 rounded-2xl border border-brand-100 dark:border-brand-800/40 px-5 py-4">
+                <p class="font-display text-3xl font-extrabold text-brand-700 dark:text-brand-400">{{ $progreso }}</p>
+                <p class="text-xs font-medium text-brand-600 dark:text-brand-500 mt-1">En progreso</p>
+            </div>
+            <div class="bg-green-50 dark:bg-green-900/20 rounded-2xl border border-green-100 dark:border-green-800/40 px-5 py-4">
+                <p class="font-display text-3xl font-extrabold text-green-700 dark:text-green-400">{{ $completado }}</p>
+                <p class="text-xs font-medium text-green-600 dark:text-green-500 mt-1">Completados</p>
+            </div>
+        </div>
+
+        {{-- Lista de pedidos --}}
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <h2 class="font-display font-bold text-ink dark:text-white">Mis proyectos</h2>
+                <span class="text-xs text-slate-400">{{ $total }} proyecto{{ $total !== 1 ? 's' : '' }}</span>
+            </div>
+
+            @if($orders->isEmpty())
+                <div class="px-6 py-16 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/>
+                        </svg>
+                    </div>
+                    <p class="font-display font-bold text-lg text-ink dark:text-white">No tenés proyectos aún</p>
+                    <p class="text-slate-400 text-sm mt-1 mb-5">Contactanos para empezar tu primer proyecto.</p>
+                    <button onclick="document.getElementById('modal-contacto').classList.remove('hidden')"
+                            class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
+                        Contactar ahora
+                    </button>
+                </div>
+            @else
+            @php
+                $statusConfig = [
+                    'pendiente'   => ['label' => 'Pendiente',   'class' => 'bg-amber-50  dark:bg-amber-900/20  text-amber-700  dark:text-amber-400  border border-amber-200  dark:border-amber-800'],
+                    'en_progreso' => ['label' => 'En progreso', 'class' => 'bg-brand-50  dark:bg-brand-900/20  text-brand-700  dark:text-brand-400  border border-brand-200  dark:border-brand-800'],
+                    'completado'  => ['label' => 'Completado',  'class' => 'bg-green-50  dark:bg-green-900/20  text-green-700  dark:text-green-400  border border-green-200  dark:border-green-800'],
+                    'cancelado'   => ['label' => 'Cancelado',   'class' => 'bg-red-50    dark:bg-red-900/20    text-red-700    dark:text-red-400    border border-red-200    dark:border-red-800'],
+                ];
+            @endphp
+            <div class="divide-y divide-slate-100 dark:divide-slate-700">
+                @foreach($orders as $order)
+                @php $cfg = $statusConfig[$order->status] ?? ['label' => $order->status, 'class' => 'bg-slate-100 text-slate-600']; @endphp
+                <div class="px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-display font-bold text-ink dark:text-white">{{ $order->title }}</h3>
+                        @if($order->description)
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 line-clamp-1">{{ $order->description }}</p>
+                        @endif
+                        <div class="flex flex-wrap gap-4 mt-3 text-xs text-slate-400">
+                            @if($order->price)
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+                                ${{ number_format($order->price, 2) }}
+                            </span>
+                            @endif
+                            @if($order->deadline)
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                Entrega: {{ \Carbon\Carbon::parse($order->deadline)->format('d/m/Y') }}
+                            </span>
+                            @endif
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+                                {{ $order->created_at->format('d/m/Y') }}
+                            </span>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 {{ $cfg['class'] }}">
+                        {{ $cfg['label'] }}
+                    </span>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+
+    </div>
+</section>
+
+@endsection
