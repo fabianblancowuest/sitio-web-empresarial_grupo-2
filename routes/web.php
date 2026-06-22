@@ -30,20 +30,20 @@ Route::middleware('auth')->group(function () {
 });
 
 // Panel Cliente
-Route::middleware(['auth'])->prefix('cliente')->name('client.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('cliente')->name('client.')->group(function () {
     Route::get('/dashboard', [ClientDashboard::class, 'index'])->name('dashboard');
 });
 
 // Panel Developer
-Route::middleware(['auth'])->prefix('developer')->name('developer.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('developer')->name('developer.')->group(function () {
     Route::get('/perfil', [DeveloperProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/perfil', [DeveloperProfileController::class, 'update'])->name('profile.update');
 });
 
 // Panel Admin
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('developers', AdminDeveloperController::class);
     Route::resource('orders', AdminOrderController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -11,31 +11,8 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f4ff',
-                            100: '#dde6ff',
-                            500: '#4f6ef7',
-                            600: '#3b57e8',
-                            700: '#2c42c7',
-                            900: '#1a2660'
-                        },
-                        ink: '#0f172a',
-                    },
-                    fontFamily: {
-                        sans: ['"DM Sans"', 'sans-serif'],
-                        display: ['"Syne"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
