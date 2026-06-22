@@ -14,39 +14,18 @@
         }
     </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f4ff',
-                            100: '#dde6ff',
-                            500: '#4f6ef7',
-                            600: '#3b57e8',
-                            700: '#2c42c7',
-                            900: '#1a2660'
-                        },
-                        ink: '#0f172a',
-                    },
-                    fontFamily: {
-                        sans: ['"DM Sans"', 'sans-serif'],
-                        display: ['"Syne"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
 </head>
 
-<body class="font-sans antialiased bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<body
+    class="font-sans antialiased bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
 
     {{-- NAVBAR --}}
-    <header class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
+    <header
+        class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
 
             {{-- Logo --}}
@@ -59,9 +38,12 @@
 
             {{-- Nav desktop --}}
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
-                <a href="{{ route('home') }}" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Inicio</a>
-                <a href="{{ route('projects.index') }}" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Proyectos</a>
-                <a href="{{ route('developers.index') }}" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Equipo</a>
+                <a href="{{ route('home') }}"
+                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Inicio</a>
+                <a href="{{ route('projects.index') }}"
+                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Proyectos</a>
+                <a href="{{ route('developers.index') }}"
+                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Equipo</a>
                 <button onclick="document.getElementById('modal-contacto').classList.remove('hidden')"
                     class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2 rounded-xl transition-colors">
                     Contacto
@@ -72,43 +54,43 @@
 
                 {{-- Auth desktop --}}
                 @auth
-                @if(Auth::user()->role === 'admin')
-                <a href="{{ route('admin.developers.index') }}"
-                    class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
-                    Panel Admin
-                </a>
-                @endif
-                @if(Auth::user()->role === 'cliente')
-                <a href="{{ route('client.dashboard') }}"
-                    class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
-                    Mi Panel
-                </a>
-                @endif
-                @if(Auth::user()->isDeveloper() && Auth::user()->developer)
-                <a href="{{ route('developer.profile.edit') }}"
-                    class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
-                    Mi Perfil
-                </a>
-                @endif
-                <span class="text-sm text-slate-600 dark:text-slate-300 hidden md:block">
-                    {{ Auth::user()->name }}
-                </span>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                        class="text-sm text-slate-500 hover:text-red-500 dark:text-slate-400 transition-colors hidden md:block">
-                        Salir
-                    </button>
-                </form>
+                    @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('admin.developers.index') }}"
+                            class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
+                            Panel Admin
+                        </a>
+                    @endif
+                    @if (Auth::user()->role === 'cliente')
+                        <a href="{{ route('client.dashboard') }}"
+                            class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
+                            Mi Panel
+                        </a>
+                    @endif
+                    @if (Auth::user()->isDeveloper() && Auth::user()->developer)
+                        <a href="{{ route('developer.profile.edit') }}"
+                            class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
+                            Mi Perfil
+                        </a>
+                    @endif
+                    <span class="text-sm text-slate-600 dark:text-slate-300 hidden md:block">
+                        {{ Auth::user()->name }}
+                    </span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="text-sm text-slate-500 hover:text-red-500 dark:text-slate-400 transition-colors hidden md:block">
+                            Salir
+                        </button>
+                    </form>
                 @else
-                <a href="{{ route('login') }}"
-                    class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 transition-colors hidden md:block">
-                    Iniciar sesión
-                </a>
-                <a href="{{ route('register') }}"
-                    class="text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl transition-colors hidden md:block">
-                    Registrarse
-                </a>
+                    <a href="{{ route('login') }}"
+                        class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 transition-colors hidden md:block">
+                        Iniciar sesión
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl transition-colors hidden md:block">
+                        Registrarse
+                    </a>
                 @endauth
 
                 {{-- Botón modo oscuro --}}
@@ -129,14 +111,16 @@
                 <button class="md:hidden text-slate-600 dark:text-slate-300 p-2"
                     onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
             </div>
         </div>
 
         {{-- Menú mobile --}}
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-4 flex flex-col gap-4 text-sm text-slate-700 dark:text-slate-300">
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-4 flex flex-col gap-4 text-sm text-slate-700 dark:text-slate-300">
             <a href="{{ route('home') }}">Inicio</a>
             <a href="{{ route('projects.index') }}">Proyectos</a>
             <a href="{{ route('developers.index') }}">Equipo</a>
@@ -145,32 +129,33 @@
                 Contacto
             </button>
             @auth
-            @if(Auth::user()->role === 'admin')
-            <a href="{{ route('admin.developers.index') }}" class="text-brand-500 font-semibold">Panel Admin</a>
-            @endif
-            @if(Auth::user()->role === 'cliente')
-            <a href="{{ route('client.dashboard') }}" class="text-brand-500 font-semibold">Mi Panel</a>
-            @endif
-            @if(Auth::user()->isDeveloper() && Auth::user()->developer)
-            <a href="{{ route('developer.profile.edit') }}" class="text-brand-500 font-semibold">Mi Perfil</a>
-            @endif
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="text-red-500 font-semibold text-left">Salir</button>
-            </form>
+                @if (Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.developers.index') }}" class="text-brand-500 font-semibold">Panel Admin</a>
+                @endif
+                @if (Auth::user()->role === 'cliente')
+                    <a href="{{ route('client.dashboard') }}" class="text-brand-500 font-semibold">Mi Panel</a>
+                @endif
+                @if (Auth::user()->isDeveloper() && Auth::user()->developer)
+                    <a href="{{ route('developer.profile.edit') }}" class="text-brand-500 font-semibold">Mi Perfil</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-red-500 font-semibold text-left">Salir</button>
+                </form>
             @else
-            <a href="{{ route('login') }}" class="font-semibold">Iniciar sesión</a>
-            <a href="{{ route('register') }}" class="font-semibold">Registrarse</a>
+                <a href="{{ route('login') }}" class="font-semibold">Iniciar sesión</a>
+                <a href="{{ route('register') }}" class="font-semibold">Registrarse</a>
             @endauth
         </div>
     </header>
 
     {{-- CONTENIDO --}}
     <main class="pt-16">
-        @if(session('success'))
-        <div class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium px-6 py-3 text-center">
-            {{ session('success') }}
-        </div>
+        @if (session('success'))
+            <div
+                class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium px-6 py-3 text-center">
+                {{ session('success') }}
+            </div>
         @endif
         @yield('content')
     </main>
@@ -184,7 +169,8 @@
     </footer>
 
     {{-- MODAL CONTACTO --}}
-    <div id="modal-contacto" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div id="modal-contacto"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-lg p-8 relative">
             <button onclick="document.getElementById('modal-contacto').classList.add('hidden')"
                 class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
@@ -201,7 +187,8 @@
                         class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Correo Electrónico</label>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Correo
+                        Electrónico</label>
                     <input type="email" name="email" placeholder="Escribe tu correo electrónico..."
                         class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                 </div>
