@@ -39,13 +39,13 @@
             {{-- Nav desktop --}}
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
                 <a href="{{ route('home') }}"
-                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Inicio</a>
+                    class="{{ request()->routeIs('home') ? 'text-brand-500 dark:text-brand-400' : 'hover:text-brand-500 dark:hover:text-brand-400' }} transition-colors">Inicio</a>
                 <a href="{{ route('projects.index') }}"
-                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Proyectos</a>
+                    class="{{ request()->routeIs('projects.*') ? 'text-brand-500 dark:text-brand-400' : 'hover:text-brand-500 dark:hover:text-brand-400' }} transition-colors">Proyectos</a>
                 <a href="{{ route('developers.index') }}"
-                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Equipo</a>
+                    class="{{ request()->routeIs('developers.*') ? 'text-brand-500 dark:text-brand-400' : 'hover:text-brand-500 dark:hover:text-brand-400' }} transition-colors">Equipo</a>
                 <button onclick="document.getElementById('modal-contacto').classList.remove('hidden')"
-                    class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2 rounded-xl transition-colors">
+                    class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">
                     Contacto
                 </button>
             </nav>
@@ -126,9 +126,12 @@
         {{-- Menú mobile --}}
         <div id="mobile-menu"
             class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-4 flex flex-col gap-4 text-sm text-slate-700 dark:text-slate-300">
-            <a href="{{ route('home') }}">Inicio</a>
-            <a href="{{ route('projects.index') }}">Proyectos</a>
-            <a href="{{ route('developers.index') }}">Equipo</a>
+            <a href="{{ route('home') }}"
+               class="{{ request()->routeIs('home') ? 'text-brand-500' : '' }}">Inicio</a>
+            <a href="{{ route('projects.index') }}"
+               class="{{ request()->routeIs('projects.*') ? 'text-brand-500' : '' }}">Proyectos</a>
+            <a href="{{ route('developers.index') }}"
+               class="{{ request()->routeIs('developers.*') ? 'text-brand-500' : '' }}">Equipo</a>
             <button onclick="document.getElementById('modal-contacto').classList.remove('hidden')"
                 class="text-left text-brand-500 font-semibold">
                 Contacto
@@ -175,7 +178,7 @@
 
     {{-- MODAL CONTACTO --}}
     <div id="modal-contacto"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-900/70">
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-lg p-8 relative">
             <button onclick="document.getElementById('modal-contacto').classList.add('hidden')"
                 class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
