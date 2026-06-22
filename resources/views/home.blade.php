@@ -19,10 +19,29 @@
                 Somos un equipo de desarrolladores apasionados con experiencia en diseño, desarrollo web y aplicaciones modernas.
             </p>
             <div class="flex flex-wrap gap-4">
-                <a href="{{ route('projects.index') }}"
-                   class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
-                    Ver proyectos
-                </a>
+                @auth
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('admin.developers.index') }}"
+                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                            Ir al panel
+                        </a>
+                    @elseif(Auth::user()->isCliente())
+                        <a href="{{ route('client.dashboard') }}"
+                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                            Ir a mi panel
+                        </a>
+                    @elseif(Auth::user()->isDeveloper())
+                        <a href="{{ route('developer.profile.edit') }}"
+                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                            Ir a mi perfil
+                        </a>
+                    @endif
+                @else
+                    <a href="{{ route('projects.index') }}"
+                       class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                        Ver proyectos
+                    </a>
+                @endauth
                 <a href="{{ route('developers.index') }}"
                    class="border border-slate-200 dark:border-slate-700 hover:border-brand-400 text-slate-700 dark:text-slate-300 font-semibold px-7 py-3 rounded-xl transition-colors">
                     Conocer el equipo
@@ -259,12 +278,33 @@
     <div class="max-w-3xl mx-auto px-6 text-center">
         <h2 class="font-display text-4xl font-extrabold text-white mb-4">¿Listo para trabajar con nosotros?</h2>
         <p class="text-slate-300 mb-10 text-lg">
-            Revisa nuestra galería de proyectos y conoce al equipo detrás de cada solución.
+            @auth Revisá tus proyectos o conocé al equipo detrás de cada solución.
+            @else Revisa nuestra galería de proyectos y conoce al equipo detrás de cada solución.
+            @endauth
         </p>
-        <a href="{{ route('projects.index') }}"
-           class="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg">
-            Ver todos los proyectos
-        </a>
+        @auth
+            @if(Auth::user()->isAdmin())
+                <a href="{{ route('admin.developers.index') }}"
+                   class="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg">
+                    Ir al panel de control
+                </a>
+            @elseif(Auth::user()->isCliente())
+                <a href="{{ route('client.dashboard') }}"
+                   class="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg">
+                    Ir a mis proyectos
+                </a>
+            @elseif(Auth::user()->isDeveloper())
+                <a href="{{ route('developer.profile.edit') }}"
+                   class="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg">
+                    Ir a mi perfil
+                </a>
+            @endif
+        @else
+            <a href="{{ route('projects.index') }}"
+               class="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg">
+                Ver todos los proyectos
+            </a>
+        @endauth
     </div>
 </section>
 @endsection

@@ -88,15 +88,15 @@
                 <span class="inline-block mt-4 text-brand-500 text-xs font-semibold">Ver pedidos →</span>
             </a>
             <button onclick="document.getElementById('modal-contacto').classList.remove('hidden')"
-               class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all text-left w-full">
-                <div class="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mb-5">
+               class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md hover:-translate-y-0.5 transition-all text-left w-full cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                     <svg class="w-5 h-5 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
                         <path stroke-linecap="round" d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
                     </svg>
                 </div>
                 <h2 class="font-display text-base font-bold text-ink dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Contactanos</h2>
                 <p class="text-slate-500 dark:text-slate-400 text-sm mt-1.5 leading-relaxed">¿Tenés una consulta o nuevo proyecto?</p>
-                <span class="inline-block mt-4 text-brand-500 text-xs font-semibold">Escribinos →</span>
+                <span class="inline-block mt-4 text-brand-500 text-xs font-semibold group-hover:translate-x-1 transition-transform">Escribinos →</span>
             </button>
             <a href="{{ route('home') }}"
                class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all">
