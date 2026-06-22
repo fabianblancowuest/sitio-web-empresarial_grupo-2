@@ -115,4 +115,15 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Target Email Address
+    |--------------------------------------------------------------------------
+    |
+    | The email address where contact form submissions should be sent.
+    |
+    */
+
+    'contact_to_address' => env('MAIL_CONTACT_TO_ADDRESS', 'codebridgefsa@gmail.com'),
+
 ];
