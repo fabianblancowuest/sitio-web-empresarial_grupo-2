@@ -54,34 +54,34 @@
 
                 {{-- Auth desktop --}}
                 @auth
-                    @if (Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.developers.index') }}"
-                            class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
-                            Panel Admin
-                        </a>
-                    @endif
-                    @if (Auth::user()->role === 'cliente')
-                        <a href="{{ route('client.dashboard') }}"
-                            class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
+                    <div class="hidden md:flex items-center relative"
+                         x-data="{ open: false }"
+                         @click.outside="open = false">
+                        <button @click="open = !open"
+                                class="flex items-center gap-1 text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors">
                             Mi Panel
-                        </a>
-                    @endif
-                    @if (Auth::user()->isDeveloper() && Auth::user()->developer)
-                        <a href="{{ route('developer.profile.edit') }}"
-                            class="text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors hidden md:block">
-                            Mi Perfil
-                        </a>
-                    @endif
-                    <span class="text-sm text-slate-600 dark:text-slate-300 hidden md:block">
-                        {{ Auth::user()->name }}
-                    </span>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="text-sm text-slate-500 hover:text-red-500 dark:text-slate-400 transition-colors hidden md:block">
-                            Salir
+                            <svg class="w-4 h-4" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" d="M19 9l-7 7-7-7"/>
+                            </svg>
                         </button>
-                    </form>
+                        <div x-show="open" x-transition
+                             class="absolute top-full right-0 mt-2 w-52 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg py-2 z-50">
+                            <a href="{{ route('profile.edit') }}"
+                               class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                Perfil
+                            </a>
+                            <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                        class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" d="M17 16l4-4m0 0-4-4m4 4H7m6 4v1a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1"/></svg>
+                                    Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 @else
                     <a href="{{ route('login') }}"
                         class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 transition-colors hidden md:block">
