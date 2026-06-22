@@ -183,23 +183,23 @@
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre</label>
-                    <input type="text" name="nombre" placeholder="Escribe tu nombre..."
+                    <input type="text" name="nombre" placeholder="Escribe tu nombre..." required
                         class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Correo
                         Electrónico</label>
-                    <input type="email" name="email" placeholder="Escribe tu correo electrónico..."
+                    <input type="email" name="email" placeholder="Escribe tu correo electrónico..." required
                         class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Asunto</label>
-                    <input type="text" name="asunto" placeholder="Escribe el asunto..."
+                    <input type="text" name="asunto" placeholder="Escribe el asunto..." required
                         class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mensaje</label>
-                    <textarea name="mensaje" rows="5" placeholder="Deja tu mensaje aquí..."
+                    <textarea name="mensaje" rows="5" placeholder="Deja tu mensaje aquí..." required
                         class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"></textarea>
                 </div>
                 <button type="submit"
@@ -213,6 +213,21 @@
     <script>
         document.getElementById('modal-contacto').addEventListener('click', function(e) {
             if (e.target === this) this.classList.add('hidden');
+        });
+
+        document.querySelectorAll('#modal-contacto [required]').forEach(function(field) {
+            field.addEventListener('invalid', function() {
+                var labels = {
+                    nombre: 'El nombre es obligatorio.',
+                    email: 'El correo electrónico es obligatorio.',
+                    asunto: 'El asunto es obligatorio.',
+                    mensaje: 'El mensaje es obligatorio.'
+                };
+                this.setCustomValidity(labels[this.name] || 'Este campo es obligatorio.');
+            });
+            field.addEventListener('input', function() {
+                this.setCustomValidity('');
+            });
         });
 
         function toggleDark() {
