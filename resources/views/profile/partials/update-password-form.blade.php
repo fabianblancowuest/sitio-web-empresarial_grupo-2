@@ -23,6 +23,12 @@
             <x-input-label for="update_password_password" :value="__('New Password')" />
             <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+            <ul class="text-xs text-gray-500 dark:text-gray-400 mt-2 space-y-1 list-disc list-inside">
+                <li>Mínimo 8 caracteres</li>
+                <li>Al menos una mayúscula</li>
+                <li>Al menos un número</li>
+                <li>Al menos un carácter especial (@$!%*?&)</li>
+            </ul>
         </div>
 
         <div>
