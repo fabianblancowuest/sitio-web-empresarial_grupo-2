@@ -87,6 +87,12 @@
                     @error('password')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
+                    <ul class="text-xs text-slate-400 dark:text-slate-500 mt-2 space-y-1 list-disc list-inside">
+                        <li>Mínimo 8 caracteres</li>
+                        <li>Al menos una mayúscula</li>
+                        <li>Al menos un número</li>
+                        <li>Al menos un carácter especial (@$!%*?&)</li>
+                    </ul>
                 </div>
 
                 <div>

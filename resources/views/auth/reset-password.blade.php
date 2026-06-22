@@ -17,6 +17,12 @@
             <x-input-label for="password" :value="__('Password')" />
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <ul class="text-xs text-gray-500 dark:text-gray-400 mt-2 space-y-1 list-disc list-inside">
+                <li>Mínimo 8 caracteres</li>
+                <li>Al menos una mayúscula</li>
+                <li>Al menos un número</li>
+                <li>Al menos un carácter especial (@$!%*?&)</li>
+            </ul>
         </div>
 
         <!-- Confirm Password -->
@@ -32,7 +38,7 @@
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button>
-                {{ __('Reset Password') }}
+                {{ __('Restablecer contraseña') }}
             </x-primary-button>
         </div>
     </form>
