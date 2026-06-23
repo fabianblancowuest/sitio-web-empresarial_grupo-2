@@ -24,6 +24,10 @@ class ProfileController extends Controller
     {
         $developer = Auth::user()->developer;
 
+        if (!$developer) {
+            return redirect()->route('home')->with('error', 'No tenés un perfil de developer asociado.');
+        }
+
         $request->validate([
             'name'   => 'required|string|max:255',
             'role'   => 'nullable|string|max:255',
@@ -33,11 +37,11 @@ class ProfileController extends Controller
             'photo'  => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->except('photo');
+        $data = $request->only(['name', 'role', 'bio', 'skills', 'email', 'user_id']);
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . $file->hashName();
             $file->move(public_path('images'), $filename);
             $data['photo'] = '/images/' . $filename;
         }

@@ -30,7 +30,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . $file->hashName();
             $file->move(public_path('images'), $filename);
             $data['photo'] = '/images/' . $filename;
         }

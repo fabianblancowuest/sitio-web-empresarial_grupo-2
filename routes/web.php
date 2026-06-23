@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('cliente')->name('client.')->group(function () {
     Route::get('/dashboard', [ClientDashboard::class, 'index'])->name('dashboard');
     Route::post('/proyectos', [ClientDashboard::class, 'store'])->name('projects.store');
+    Route::put('/proyectos/{order}', [ClientDashboard::class, 'update'])->name('projects.update');
+    Route::delete('/proyectos/{order}', [ClientDashboard::class, 'destroy'])->name('projects.destroy');
     Route::post('/proyectos/{order}/mensajes', [ClientDashboard::class, 'message'])->name('messages.store');
 });
 
@@ -43,7 +45,7 @@ Route::middleware(['auth', 'verified'])->prefix('developer')->name('developer.')
 });
 
 // Panel Admin
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('developers', AdminDeveloperController::class);
     Route::resource('orders', AdminOrderController::class)->except(['show']);
     Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
