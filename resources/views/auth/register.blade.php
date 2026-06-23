@@ -56,8 +56,24 @@
 
         {{-- Card --}}
         <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-8 shadow-sm">
-            <form method="POST" action="{{ route('register') }}" class="space-y-5">
+            <form method="POST" action="{{ route('register') }}" class="space-y-5" enctype="multipart/form-data">
                 @csrf
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Foto de perfil <span class="text-slate-400 font-normal">(opcional)</span></label>
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full overflow-hidden bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center shrink-0">
+                            <span class="text-lg font-bold font-display text-brand-700 dark:text-brand-400" id="preview-initial">📷</span>
+                            <img id="preview-image" class="hidden w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <input type="file" name="photo" accept="image/*" id="photo-input"
+                                   class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brand-50 dark:file:bg-brand-900/20 file:text-brand-700 dark:file:text-brand-400 hover:file:bg-brand-100 dark:hover:file:bg-brand-900/40 transition-colors">
+                            <p class="text-xs text-slate-400 mt-1">JPG, PNG o GIF. Máximo 2 MB.</p>
+                        </div>
+                    </div>
+                    @error('photo') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
+                </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre</label>
@@ -123,6 +139,23 @@
         </p>
 
     </div>
+
+<script>
+    document.getElementById('photo-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.getElementById('preview-image');
+                const initial = document.getElementById('preview-initial');
+                img.src = ev.target.result;
+                img.classList.remove('hidden');
+                initial.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 
 </body>
 

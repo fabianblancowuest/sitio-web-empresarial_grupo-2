@@ -45,8 +45,8 @@
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300">Foto actual</p>
                 <p class="text-xs text-slate-400">Subí una nueva para reemplazarla</p>
             </div>
+            @endif
         </div>
-        @endif
 
         <input type="file" name="photo" accept="image/*" id="photo-input"
             class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
