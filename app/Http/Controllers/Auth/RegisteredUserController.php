@@ -39,17 +39,27 @@ class RegisteredUserController extends Controller
                 'min:8',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
             ],
+            'photo' => ['nullable', 'image', 'max:2048'],
         ], [
             'password.min' => 'La contraseña debe tener al menos :min caracteres.',
             'password.regex' => 'La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial.',
             'password.confirmed' => 'La confirmación de la contraseña no coincide.',
         ]);
 
-        $user = User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ];
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            $data['photo'] = '/images/' . $filename;
+        }
+
+        $user = User::create($data);
 
         event(new Registered($user));
 

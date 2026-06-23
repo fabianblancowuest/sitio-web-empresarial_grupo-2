@@ -12,9 +12,28 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-5">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-5" enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Foto de perfil</label>
+            <div class="flex items-center gap-5">
+                <div class="w-16 h-16 rounded-full overflow-hidden bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center shrink-0">
+                    @if ($user->photo)
+                        <img src="{{ asset($user->photo) }}" alt="Foto de perfil" class="w-full h-full object-cover">
+                    @else
+                        <span class="text-lg font-bold font-display text-brand-700 dark:text-brand-400">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                    @endif
+                </div>
+                <div class="flex-1">
+                    <input type="file" name="photo" accept="image/*"
+                           class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brand-50 dark:file:bg-brand-900/20 file:text-brand-700 dark:file:text-brand-400 hover:file:bg-brand-100 dark:hover:file:bg-brand-900/40 transition-colors">
+                    <p class="text-xs text-slate-400 mt-1">JPG, PNG o GIF. Máximo 2 MB.</p>
+                </div>
+            </div>
+            @error('photo') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
+        </div>
 
         <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre</label>

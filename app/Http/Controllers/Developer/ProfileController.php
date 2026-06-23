@@ -30,9 +30,19 @@ class ProfileController extends Controller
             'bio'    => 'nullable|string',
             'skills' => 'nullable|string',
             'email'  => 'nullable|email',
+            'photo'  => 'nullable|image|max:2048',
         ]);
 
-        $developer->update($request->all());
+        $data = $request->except('photo');
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            $data['photo'] = '/images/' . $filename;
+        }
+
+        $developer->update($data);
 
         return redirect()->route('developer.profile.edit')->with('success', '¡Perfil actualizado correctamente!');
     }

@@ -25,7 +25,7 @@
         @endphp
         <div class="flex items-center gap-5 mb-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
             @if($developer->photo)
-                <img src="{{ Storage::url($developer->photo) }}" alt="{{ $developer->name }}"
+                <img src="{{ asset($developer->photo) }}" alt="{{ $developer->name }}"
                      class="w-16 h-16 rounded-xl object-cover shrink-0">
             @else
                 <div class="w-16 h-16 rounded-xl {{ $color }} flex items-center justify-center text-2xl font-display font-extrabold shrink-0">

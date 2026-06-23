@@ -14,4 +14,9 @@ class Developer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }
