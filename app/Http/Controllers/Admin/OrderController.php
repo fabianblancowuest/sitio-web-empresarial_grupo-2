@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewOrderMail;
 use App\Models\Order;
+use App\Models\OrderMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -36,6 +40,12 @@ class OrderController extends Controller
         return redirect()->route('admin.orders.index')->with('success', 'Pedido creado correctamente.');
     }
 
+    public function show(Order $order)
+    {
+        $order->load('user', 'messages.user');
+        return view('admin.orders.show', compact('order'));
+    }
+
     public function edit(Order $order)
     {
         $clients = User::where('role', 'cliente')->get();
@@ -59,5 +69,33 @@ class OrderController extends Controller
     {
         $order->delete();
         return redirect()->route('admin.orders.index')->with('success', 'Pedido eliminado correctamente.');
+    }
+
+    public function message(Request $request, Order $order)
+    {
+        $request->validate([
+            'message' => 'required|string|max:5000',
+        ]);
+
+        OrderMessage::create([
+            'order_id' => $order->id,
+            'user_id'  => Auth::id(),
+            'message'  => $request->message,
+        ]);
+
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'Respuesta enviada correctamente.');
+    }
+
+    public function status(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pendiente,en_progreso,completado,cancelado',
+        ]);
+
+        $order->update(['status' => $request->status]);
+
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'Estado actualizado correctamente.');
     }
 }

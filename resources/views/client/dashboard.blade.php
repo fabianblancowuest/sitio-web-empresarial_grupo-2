@@ -89,34 +89,82 @@
             <div class="divide-y divide-slate-100 dark:divide-slate-700">
                 @foreach($orders as $order)
                 @php $cfg = $statusConfig[$order->status] ?? ['label' => $order->status, 'class' => 'bg-slate-100 text-slate-600']; @endphp
-                <div class="px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-display font-bold text-ink dark:text-white">{{ $order->title }}</h3>
-                        @if($order->description)
-                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 line-clamp-1">{{ $order->description }}</p>
-                        @endif
-                        <div class="flex flex-wrap gap-4 mt-3 text-xs text-slate-400">
-                            @if($order->price)
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
-                                ${{ number_format($order->price, 2) }}
-                            </span>
+                <div class="order-item">
+                    {{-- Cabecera clickeable --}}
+                    <button onclick="toggleOrder({{ $order->id }})" class="w-full text-left px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-display font-bold text-ink dark:text-white">{{ $order->title }}</h3>
+                            @if($order->description)
+                            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 line-clamp-1">{{ $order->description }}</p>
                             @endif
-                            @if($order->deadline)
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-                                Entrega: {{ \Carbon\Carbon::parse($order->deadline)->format('d/m/Y') }}
+                            <div class="flex flex-wrap gap-4 mt-3 text-xs text-slate-400">
+                                @if($order->price)
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+                                    ${{ number_format($order->price, 2) }}
+                                </span>
+                                @endif
+                                @if($order->deadline)
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                    Entrega: {{ \Carbon\Carbon::parse($order->deadline)->format('d/m/Y') }}
+                                </span>
+                                @endif
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+                                    {{ $order->created_at->format('d/m/Y') }}
+                                </span>
+                                @if($order->messages->count() > 0)
+                                <span class="flex items-center gap-1 text-brand-500">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                    {{ $order->messages->count() }}
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <span class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ $cfg['class'] }}">
+                                {{ $cfg['label'] }}
                             </span>
-                            @endif
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
-                                {{ $order->created_at->format('d/m/Y') }}
-                            </span>
+                            <svg class="w-4 h-4 text-slate-400 transition-transform" id="chevron-{{ $order->id }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                    </button>
+
+                    {{-- Conversación (oculta por defecto) --}}
+                    <div id="conversation-{{ $order->id }}" class="hidden border-t border-slate-100 dark:border-slate-700">
+                        <div class="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50">
+                            @forelse($order->messages as $i => $msg)
+                            @php $isClient = $msg->user_id === Auth::id(); @endphp
+                            <div class="flex {{ $isClient ? 'justify-end' : 'justify-start' }} mb-3 last:mb-0">
+                                <div class="max-w-[80%] {{ $isClient ? 'bg-brand-500 text-white rounded-2xl rounded-br-md' : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl rounded-bl-md border border-slate-200 dark:border-slate-600' }} px-4 py-3">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-xs font-semibold {{ $isClient ? 'text-white/80' : 'text-slate-400' }}">
+                                            {{ $isClient ? 'Vos' : 'CodeBridge' }}
+                                        </span>
+                                        <span class="text-xs {{ $isClient ? 'text-white/60' : 'text-slate-400' }}">
+                                            {{ $msg->created_at->format('d/m H:i') }}
+                                        </span>
+                                    </div>
+                                    <p class="text-sm whitespace-pre-wrap">{{ $msg->message }}</p>
+                                </div>
+                            </div>
+                            @empty
+                            <p class="text-sm text-slate-400 text-center py-4">No hay mensajes aún.</p>
+                            @endforelse
+                        </div>
+
+                        {{-- Responder --}}
+                        <div class="border-t border-slate-100 dark:border-slate-700 px-6 py-4 bg-white dark:bg-slate-800">
+                            <form action="{{ route('client.messages.store', $order) }}" method="POST" class="flex gap-3">
+                                @csrf
+                                <input type="text" name="message" placeholder="Escribí tu mensaje..." required
+                                       class="flex-1 border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                                <button type="submit" class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm shrink-0">
+                                    Enviar
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <span class="px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 {{ $cfg['class'] }}">
-                        {{ $cfg['label'] }}
-                    </span>
                 </div>
                 @endforeach
             </div>
@@ -125,6 +173,17 @@
 
     </div>
 </section>
+
+@push('scripts')
+<script>
+function toggleOrder(id) {
+    const el = document.getElementById('conversation-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    el.classList.toggle('hidden');
+    chevron.classList.toggle('rotate-180');
+}
+</script>
+@endpush
 
 {{-- Modal Solicitar Proyecto --}}
 <div id="modal-proyecto" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) this.classList.add('hidden')">
