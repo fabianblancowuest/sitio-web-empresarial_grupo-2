@@ -14,6 +14,7 @@ class DeveloperController extends Controller
 
     public function show(Developer $developer)
     {
+        $developer->load('projects', 'user');
         return view('developers.show', compact('developer'));
     }
 }

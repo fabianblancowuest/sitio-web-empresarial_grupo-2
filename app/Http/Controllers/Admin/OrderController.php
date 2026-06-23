@@ -36,7 +36,7 @@ class OrderController extends Controller
             'deadline'    => 'nullable|date',
         ]);
 
-        Order::create($request->all());
+        Order::create($request->only(['user_id', 'title', 'description', 'status', 'price', 'deadline']));
         return redirect()->route('admin.orders.index')->with('success', 'Pedido creado correctamente.');
     }
 
@@ -55,13 +55,15 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->validate([
+            'user_id'     => 'required|exists:users,id',
             'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
             'status'      => 'required|in:pendiente,en_progreso,completado,cancelado',
             'price'       => 'nullable|numeric',
             'deadline'    => 'nullable|date',
         ]);
 
-        $order->update($request->all());
+        $order->update($request->only(['user_id', 'title', 'description', 'status', 'price', 'deadline']));
         return redirect()->route('admin.orders.index')->with('success', 'Pedido actualizado correctamente.');
     }
 

@@ -66,4 +66,33 @@ class DashboardController extends Controller
         return redirect()->route('client.dashboard')
             ->with('success', 'Mensaje enviado correctamente.');
     }
+
+    public function update(Request $request, Order $order)
+    {
+        if ($order->user_id !== Auth::id() || $order->status !== 'pendiente') {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string|max:5000',
+        ]);
+
+        $order->update($validated);
+
+        return redirect()->route('client.dashboard')
+            ->with('success', 'Proyecto actualizado correctamente.');
+    }
+
+    public function destroy(Order $order)
+    {
+        if ($order->user_id !== Auth::id() || $order->status !== 'pendiente') {
+            abort(403);
+        }
+
+        $order->delete();
+
+        return redirect()->route('client.dashboard')
+            ->with('success', 'Proyecto eliminado correctamente.');
+    }
 }
