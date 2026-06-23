@@ -18,6 +18,12 @@
             <p class="text-slate-500 dark:text-slate-400 mt-2">Acá podés ver el estado de tus proyectos contratados.</p>
         </div>
 
+        @if(session('success'))
+        <div class="mb-8 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 rounded-xl px-5 py-3 text-sm font-medium">
+            {{ session('success') }}
+        </div>
+        @endif
+
         {{-- Stats --}}
         @php
             $total      = $orders->count();
@@ -48,7 +54,13 @@
         <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
                 <h2 class="font-display font-bold text-ink dark:text-white">Mis proyectos</h2>
-                <span class="text-xs text-slate-400">{{ $total }} proyecto{{ $total !== 1 ? 's' : '' }}</span>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-400">{{ $total }} proyecto{{ $total !== 1 ? 's' : '' }}</span>
+                    <button onclick="document.getElementById('modal-proyecto').classList.remove('hidden')"
+                            class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-4 py-2 rounded-xl transition-colors text-sm">
+                        + Solicitar proyecto
+                    </button>
+                </div>
             </div>
 
             @if($orders->isEmpty())
@@ -60,9 +72,9 @@
                     </div>
                     <p class="font-display font-bold text-lg text-ink dark:text-white">No tenés proyectos aún</p>
                     <p class="text-slate-400 text-sm mt-1 mb-5">Contactanos para empezar tu primer proyecto.</p>
-                    <button onclick="document.getElementById('modal-contacto').classList.remove('hidden')"
+                    <button onclick="document.getElementById('modal-proyecto').classList.remove('hidden')"
                             class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
-                        Contactar ahora
+                        Solicitar proyecto
                     </button>
                 </div>
             @else
@@ -113,5 +125,52 @@
 
     </div>
 </section>
+
+{{-- Modal Solicitar Proyecto --}}
+<div id="modal-proyecto" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) this.classList.add('hidden')">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-slate-100 dark:border-slate-700">
+            <h3 class="font-display font-bold text-lg text-ink dark:text-white">Solicitar proyecto</h3>
+            <button onclick="document.getElementById('modal-proyecto').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6l-12 12"/></svg>
+            </button>
+        </div>
+
+        <form action="{{ route('client.projects.store') }}" method="POST" class="p-6 space-y-5">
+            @csrf
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tu correo</label>
+                <input type="email" value="{{ Auth::user()->email }}" readonly
+                       class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700/50 cursor-not-allowed">
+                <p class="text-xs text-slate-400 mt-1">Usaremos tu correo registrado para contactarte.</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nombre del proyecto <span class="text-red-500">*</span></label>
+                <input type="text" name="title" value="{{ old('title') }}" placeholder="Ej: Tienda online de ropa" required
+                       class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('title') border-red-400 @enderror">
+                @error('title') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Descripción</label>
+                <textarea name="description" rows="4" placeholder="Contanos en detalle qué necesitas..."
+                          class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none @error('description') border-red-400 @enderror">{{ old('description') }}</textarea>
+                @error('description') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit" class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm flex-1">
+                    Enviar solicitud
+                </button>
+                <button type="button" onclick="document.getElementById('modal-proyecto').classList.add('hidden')"
+                        class="border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold px-6 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 @endsection

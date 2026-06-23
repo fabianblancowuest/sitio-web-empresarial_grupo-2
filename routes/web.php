@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 // Panel Cliente
 Route::middleware(['auth', 'verified'])->prefix('cliente')->name('client.')->group(function () {
     Route::get('/dashboard', [ClientDashboard::class, 'index'])->name('dashboard');
+    Route::post('/proyectos', [ClientDashboard::class, 'store'])->name('projects.store');
 });
 
 // Panel Developer
