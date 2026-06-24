@@ -14,7 +14,10 @@ class ProfileController extends Controller
         $developer = Auth::user()->developer;
 
         if (!$developer) {
-            return redirect()->route('home')->with('error', 'No tenés un perfil de developer asociado.');
+            $developer = Developer::create([
+                'user_id' => Auth::id(),
+                'name'    => Auth::user()->name,
+            ]);
         }
 
         return view('developer.profile', compact('developer'));
@@ -25,7 +28,10 @@ class ProfileController extends Controller
         $developer = Auth::user()->developer;
 
         if (!$developer) {
-            return redirect()->route('home')->with('error', 'No tenés un perfil de developer asociado.');
+            $developer = Developer::create([
+                'user_id' => Auth::id(),
+                'name'    => Auth::user()->name,
+            ]);
         }
 
         $request->validate([

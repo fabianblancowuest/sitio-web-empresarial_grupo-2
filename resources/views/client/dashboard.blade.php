@@ -1,28 +1,21 @@
-@extends('layouts.app')
+@extends('client.layouts.client')
 @section('title', 'Mis proyectos · CodeBridge')
 
 @section('content')
 
-<section class="py-16 bg-slate-50 dark:bg-slate-900 min-h-screen">
-    <div class="max-w-5xl mx-auto px-6">
+<div class="max-w-5xl mx-auto">
 
-        {{-- Encabezado --}}
-        <div class="mb-10">
-            <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 px-3 py-1.5 rounded-full mb-4">
-                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
-                Panel de cliente
-            </span>
-            <h1 class="font-display text-4xl font-extrabold text-ink dark:text-white">
-                Hola, {{ Auth::user()->name }}
-            </h1>
-            <p class="text-slate-500 dark:text-slate-400 mt-2">Acá podés ver el estado de tus proyectos contratados.</p>
-        </div>
-
-        @if(session('success'))
-        <div class="mb-8 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 rounded-xl px-5 py-3 text-sm font-medium">
-            {{ session('success') }}
-        </div>
-        @endif
+    {{-- Encabezado --}}
+    <div class="mb-10">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 px-3 py-1.5 rounded-full mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+            Panel de cliente
+        </span>
+        <h1 class="font-display text-4xl font-extrabold text-ink dark:text-white">
+            Hola, {{ Auth::user()->name }}
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-2">Acá podés ver el estado de tus proyectos contratados.</p>
+    </div>
 
         {{-- Stats --}}
         @php
@@ -205,7 +198,6 @@
         </div>
 
     </div>
-</section>
 
 {{-- Modal Editar Proyecto --}}
 <div id="modal-editar" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) this.classList.add('hidden')">

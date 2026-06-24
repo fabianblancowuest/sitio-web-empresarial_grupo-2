@@ -28,47 +28,6 @@
         class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
         <div class="relative flex items-center justify-center h-16 px-6">
 
-            {{-- Mi Panel xtremo izquierdo absoluto --}}
-            @auth
-            <div class="hidden md:flex absolute left-0 inset-y-0 items-center ml-3" x-data="{ menuOpen: false }" @click.outside="menuOpen = false">
-                <button @click="menuOpen = !menuOpen"
-                        class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" d="M3 12l2-2m0 0 7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11 2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6"/>
-                    </svg>
-                    <span>Mi Panel</span>
-                    <svg class="w-4 h-4" :class="{ 'rotate-90': menuOpen }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-                <div x-show="menuOpen" x-transition
-                     class="absolute top-full left-0 mt-2 w-56 bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-lg py-2 z-50"
-                     style="display: none;">
-                    <a href="{{ route('home') }}"
-                       class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors">
-                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" d="M3 12l2-2m0 0 7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11 2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6"/></svg>
-                        Inicio
-                    </a>
-                    <a href="{{ route('projects.index') }}"
-                       class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors">
-                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                        Proyectos
-                    </a>
-                    <a href="{{ route('developers.index') }}"
-                       class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors">
-                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" d="M17 20h5v-1a4 4 0 0 0-4-4h-1M9 20H4v-1a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1H9zm4-10a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></svg>
-                        Equipo
-                    </a>
-                    <div class="border-t border-slate-200/40 dark:border-slate-700/40 my-1"></div>
-                    <button @click="document.getElementById('modal-contacto').classList.remove('hidden'); menuOpen = false"
-                            class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors">
-                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg>
-                        Contacto
-                    </button>
-                </div>
-            </div>
-            @endauth
-
             {{-- Contenido centrado: Logo + Nav guest + Derecha --}}
             <div class="flex items-center justify-between w-full max-w-6xl">
 
@@ -120,7 +79,7 @@
                             <a href="{{ route('profile.edit') }}"
                                class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                                 <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                Perfil
+                               Mi Perfil
                             </a>
                             <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
                             <form method="POST" action="{{ route('logout') }}">
@@ -188,7 +147,7 @@
                     <a href="{{ route('admin.developers.index') }}" class="text-brand-500 font-semibold">Panel Admin</a>
                 @endif
                 @if (Auth::user()->role === 'cliente')
-                    <a href="{{ route('client.dashboard') }}" class="text-brand-500 font-semibold">Mi Panel</a>
+                    <a href="{{ route('client.dashboard') }}" class="text-brand-500 font-semibold">Mis Proyectos</a>
                 @endif
                 @if (Auth::user()->isDeveloper() && Auth::user()->developer)
                     <a href="{{ route('developer.profile.edit') }}" class="text-brand-500 font-semibold">Mi Perfil</a>
