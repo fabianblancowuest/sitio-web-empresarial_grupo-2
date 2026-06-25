@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Developer extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name', 'role', 'bio', 'skills', 'email', 'photo', 'user_id',
     ];
@@ -13,5 +16,10 @@ class Developer extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 }

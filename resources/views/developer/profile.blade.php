@@ -25,7 +25,7 @@
         @endphp
         <div class="flex items-center gap-5 mb-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
             @if($developer->photo)
-                <img src="{{ Storage::url($developer->photo) }}" alt="{{ $developer->name }}"
+                <img src="{{ asset($developer->photo) }}" alt="{{ $developer->name }}"
                      class="w-16 h-16 rounded-xl object-cover shrink-0">
             @else
                 <div class="w-16 h-16 rounded-xl {{ $color }} flex items-center justify-center text-2xl font-display font-extrabold shrink-0">
@@ -78,8 +78,13 @@
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Foto de perfil</label>
-                    <input type="file" name="photo" accept="image/*" id="photo-input"
-                           class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+                    <label for="photo-input" class="cursor-pointer inline-flex items-center gap-2 bg-brand-50 dark:bg-brand-900/20 text-brand-700 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/40 font-semibold px-4 py-2 rounded-xl transition-colors text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" d="M4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/>
+                        </svg>
+                        Elegir foto
+                    </label>
+                    <input type="file" name="photo" accept="image/*" id="photo-input" class="hidden">
                     <p class="text-xs text-slate-400 mt-1">JPG, PNG o WEBP · máx. 2 MB</p>
                     <div id="photo-preview" class="hidden mt-3">
                         <img id="preview-img" src="" alt="Vista previa" class="w-14 h-14 rounded-xl object-cover border-2 border-brand-200">

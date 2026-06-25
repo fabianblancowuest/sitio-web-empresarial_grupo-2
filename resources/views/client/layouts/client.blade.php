@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin · CodeBridge')</title>
+    <title>@yield('title', 'Mi Panel · CodeBridge')</title>
     <script>
         if (localStorage.getItem('theme') === 'dark' ||
             (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -25,11 +25,11 @@
 
             {{-- Logo --}}
             <div class="px-5 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <a href="{{ route('home') }}" class="flex items-center gap-2">
+                <a href="{{ route('client.dashboard') }}" class="flex items-center gap-2">
                     <img src="{{ asset('favicon.png') }}" alt="CodeBridge" class="h-8 w-auto">
                     <div>
                         <span class="font-display text-xl font-extrabold">
-                            Pa<span class="text-brand-500">nel</span>
+                            Mi Pa<span class="text-brand-500">nel</span>
                         </span>
                         
                     </div>
@@ -47,28 +47,19 @@
 
             {{-- Nav --}}
             <nav class="flex-1 px-3 py-5 space-y-0.5">
-                <p class="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest px-3 mb-2">Gestión</p>
+                <p class="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest px-3 mb-2">Mis proyectos</p>
 
-                <a href="{{ route('admin.developers.index') }}"
+                <a href="{{ route('client.dashboard') }}"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors
-                          {{ request()->routeIs('admin.developers.*') ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}">
+                          {{ request()->routeIs('client.dashboard') ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" d="M17 20h5v-1a4 4 0 0 0-4-4h-1M9 20H4v-1a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1H9zm4-10a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
                     </svg>
-                    Desarrolladores
-                    @if(request()->routeIs('admin.developers.*'))
-                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
-                    @endif
-                </a>
-
-                <a href="{{ route('admin.orders.index') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors
-                          {{ request()->routeIs('admin.orders.*') ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}">
-                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />
-                    </svg>
-                    Pedidos
-                    @if(request()->routeIs('admin.orders.*'))
+                    Mis Proyectos
+                    @if(request()->routeIs('client.dashboard'))
                     <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
                     @endif
                 </a>
@@ -76,6 +67,21 @@
                 <div class="pt-4 pb-1">
                     <p class="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest px-3 mb-2">Navegación</p>
                 </div>
+
+                <a href="{{ route('dashboard') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors
+                          {{ request()->routeIs('dashboard') ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                    Dashboard
+                    @if(request()->routeIs('dashboard'))
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                    @endif
+                </a>
 
                 <a href="{{ route('home') }}"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -95,7 +101,7 @@
                     </div>
                     <div class="min-w-0">
                         <p class="text-xs font-semibold text-slate-800 dark:text-white truncate">{{ Auth::user()->name }}</p>
-                        <p class="text-[10px] text-slate-400 truncate">Administrador</p>
+                        <p class="text-[10px] text-slate-400 truncate">Cliente</p>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">

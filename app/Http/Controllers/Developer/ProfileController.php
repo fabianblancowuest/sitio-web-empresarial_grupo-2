@@ -14,7 +14,10 @@ class ProfileController extends Controller
         $developer = Auth::user()->developer;
 
         if (!$developer) {
-            return redirect()->route('home')->with('error', 'No tenés un perfil de developer asociado.');
+            $developer = Developer::create([
+                'user_id' => Auth::id(),
+                'name'    => Auth::user()->name,
+            ]);
         }
 
         return view('developer.profile', compact('developer'));
@@ -24,15 +27,32 @@ class ProfileController extends Controller
     {
         $developer = Auth::user()->developer;
 
+        if (!$developer) {
+            $developer = Developer::create([
+                'user_id' => Auth::id(),
+                'name'    => Auth::user()->name,
+            ]);
+        }
+
         $request->validate([
             'name'   => 'required|string|max:255',
             'role'   => 'nullable|string|max:255',
             'bio'    => 'nullable|string',
             'skills' => 'nullable|string',
             'email'  => 'nullable|email',
+            'photo'  => 'nullable|image|max:2048',
         ]);
 
-        $developer->update($request->all());
+        $data = $request->only(['name', 'role', 'bio', 'skills', 'email', 'user_id']);
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->hashName();
+            $file->move(public_path('images'), $filename);
+            $data['photo'] = '/images/' . $filename;
+        }
+
+        $developer->update($data);
 
         return redirect()->route('developer.profile.edit')->with('success', '¡Perfil actualizado correctamente!');
     }

@@ -33,11 +33,11 @@ class DeveloperController extends Controller
             'photo'   => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->except('photo');
+        $data = $request->only(['name', 'role', 'bio', 'skills', 'email', 'user_id']);
 
         if ($request->hasFile('photo')) {
             $file     = $request->file('photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . $file->hashName();
             $file->move(public_path('images'), $filename);
             $data['photo'] = '/images/' . $filename;
         }
@@ -69,11 +69,11 @@ class DeveloperController extends Controller
             'photo'   => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->except('photo');
+        $data = $request->only(['name', 'role', 'bio', 'skills', 'email', 'user_id']);
 
         if ($request->hasFile('photo')) {
             $file     = $request->file('photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . $file->hashName();
             $file->move(public_path('images'), $filename);
             $data['photo'] = '/images/' . $filename;
         }

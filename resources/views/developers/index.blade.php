@@ -31,10 +31,14 @@
 
                 {{-- Avatar con foto o iniciales --}}
                 @if($developer->photo)
-                <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow {{ $color }}">
+                <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow">
                     <img src="{{ asset($developer->photo) }}"
                         alt="{{ $developer->name }}"
                         class="w-full h-full object-cover object-top">
+                </div>
+                @else
+                <div class="w-20 h-20 rounded-full {{ $color }} flex items-center justify-center text-2xl font-display font-extrabold border-2 border-white shadow">
+                    {{ $initials }}
                 </div>
                 @endif
 

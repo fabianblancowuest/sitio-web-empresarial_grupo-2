@@ -18,32 +18,36 @@
             <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed max-w-md">
                 Somos un equipo de desarrolladores apasionados con experiencia en diseño, desarrollo web y aplicaciones modernas.
             </p>
-            <div class="flex flex-wrap gap-4">
+            <div class="flex flex-wrap items-center gap-3">
                 @auth
                     @if(Auth::user()->isAdmin())
                         <a href="{{ route('admin.developers.index') }}"
-                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors">
                             Ir al panel
                         </a>
                     @elseif(Auth::user()->isCliente())
                         <a href="{{ route('client.dashboard') }}"
-                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors">
                             Ir a mi panel
                         </a>
+                        <a href="{{ route('projects.index') }}"
+                           class="border border-slate-200 dark:border-slate-700 hover:border-brand-400 text-slate-700 dark:text-slate-300 font-semibold px-6 py-2.5 rounded-xl transition-colors">
+                            Ver proyectos
+                        </a>
                     @elseif(Auth::user()->isDeveloper())
-                        <a href="{{ route('developer.profile.edit') }}"
-                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
-                            Ir a mi perfil
+                        <a href="{{ route('dashboard') }}"
+                           class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors">
+                            Ir a mi panel
                         </a>
                     @endif
                 @else
                     <a href="{{ route('projects.index') }}"
-                       class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors shadow-sm">
+                       class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors">
                         Ver proyectos
                     </a>
                 @endauth
                 <a href="{{ route('developers.index') }}"
-                   class="border border-slate-200 dark:border-slate-700 hover:border-brand-400 text-slate-700 dark:text-slate-300 font-semibold px-7 py-3 rounded-xl transition-colors">
+                    class="border border-slate-200 dark:border-slate-700 hover:border-brand-400 text-slate-700 dark:text-slate-300 font-semibold px-6 py-2.5 rounded-xl transition-colors">
                     Conocer el equipo
                 </a>
             </div>
@@ -294,9 +298,9 @@
                     Ir a mis proyectos
                 </a>
             @elseif(Auth::user()->isDeveloper())
-                <a href="{{ route('developer.profile.edit') }}"
+                <a href="{{ route('dashboard') }}"
                    class="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg">
-                    Ir a mi perfil
+                    Ir a mi panel
                 </a>
             @endif
         @else
