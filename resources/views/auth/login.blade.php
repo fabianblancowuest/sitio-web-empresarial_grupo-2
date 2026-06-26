@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es" class="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión · CodeBridge</title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' ||
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#f0f4ff', 100: '#dde6ff', 500: '#4f6ef7', 600: '#3b57e8', 700: '#2c42c7', 900: '#1a2660' },
+                        ink: '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans antialiased bg-slate-50 dark:bg-slate-900 min-h-screen flex items-center justify-center px-4">
+
+    <div class="w-full max-w-sm">
+
+        <div class="text-center mb-8">
+            <a href="{{ route('home') }}" class="flex flex-col items-center gap-2">
+                <img src="{{ asset('favicon.png') }}" alt="CodeBridge" class="h-12 w-auto">
+                <span class="font-display text-2xl font-bold text-ink dark:text-white">
+                    Code<span class="text-brand-500">Bridge</span>
+                </span>
+            </a>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Iniciá sesión en tu cuenta</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 p-6 shadow-sm">
+
+            @if (session('status'))
+            <div class="mb-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm px-4 py-3 rounded-lg">
+                {{ session('status') }}
+            </div>
+            @endif
+
+            <form method="POST" action="{{ route('login') }}" class="space-y-4">
+                @csrf
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                        Correo electrónico
+                    </label>
+                    <input type="email" name="email" value="{{ old('email') }}" required autofocus
+                        placeholder="tu@correo.com"
+                        class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('email') border-red-400 @enderror">
+                    @error('email')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <input type="password" name="password" id="login_password" required
+                            placeholder="••••••••"
+                            class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('password') border-red-400 @enderror">
+                        <button type="button" onclick="togglePassword('login_password', this)"
+                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                            <svg class="w-4 h-4 eye-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg class="w-4 h-4 eye-closed hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                            </svg>
+                        </button>
+                    </div>
+                    @error('password')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 cursor-pointer">
+                        <input type="checkbox" name="remember" class="rounded border-slate-300 text-brand-500">
+                        Recordarme
+                    </label>
+                    @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}"
+                        class="text-sm text-brand-500 hover:text-brand-600 transition-colors">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                    @endif
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold py-2.5 rounded-lg transition-colors text-sm">
+                    Iniciar sesión
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-5">
+            ¿No tenés cuenta?
+            <a href="{{ route('register') }}" class="text-brand-500 hover:text-brand-600 font-semibold transition-colors">
+                Registrarse
+            </a>
+        </p>
+
+        <p class="text-center mt-3">
+            <a href="{{ route('home') }}" class="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                &larr; Volver al inicio
+            </a>
+        </p>
+
+    </div>
+
+    <script>
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.querySelector('.eye-open').classList.add('hidden');
+                btn.querySelector('.eye-closed').classList.remove('hidden');
+            } else {
+                input.type = 'password';
+                btn.querySelector('.eye-closed').classList.add('hidden');
+                btn.querySelector('.eye-open').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+
+</html>
