@@ -39,7 +39,7 @@ class DeveloperController extends Controller
             $file     = $request->file('photo');
             $filename = time() . '_' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $data['photo'] = '/images/' . $filename;
+            $data['photo'] = 'images/' . $filename;
         }
 
         Developer::create($data);
@@ -75,7 +75,7 @@ class DeveloperController extends Controller
             $file     = $request->file('photo');
             $filename = time() . '_' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $data['photo'] = '/images/' . $filename;
+            $data['photo'] = 'images/' . $filename;
         }
 
         $developer->update($data);
