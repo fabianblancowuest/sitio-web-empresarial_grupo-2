@@ -5,11 +5,11 @@
 
 <div class="mb-8">
     <a href="{{ route('admin.developers.index') }}"
-        class="text-sm text-slate-500 hover:text-brand-500 transition-colors">← Volver</a>
-    <h1 class="font-display text-3xl font-extrabold text-ink dark:text-white mt-2">Editar Developer</h1>
+        class="text-sm text-slate-500 hover:text-brand-500 transition-colors">&larr; Volver</a>
+    <h1 class="font-display text-xl sm:text-2xl font-bold text-ink dark:text-white mt-2">Editar Developer</h1>
 </div>
 
-<div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-8 max-w-2xl">
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 p-5 sm:p-8 max-w-2xl">
     <form action="{{ route('admin.developers.update', $developer) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
         @csrf
         @method('PUT')
@@ -17,90 +17,87 @@
         <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre <span class="text-red-500">*</span></label>
             <input type="text" name="name" value="{{ old('name', $developer->name) }}"
-                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
             @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
         <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Rol</label>
             <input type="text" name="role" value="{{ old('role', $developer->role) }}"
-                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
         </div>
 
         <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
             <input type="email" name="email" value="{{ old('email', $developer->email) }}"
-                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
         </div>
 
-        {{-- Foto de perfil --}}
         <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Foto de perfil</label>
 
-            {{-- Foto actual --}}
             @if($developer->photo)
-            <img src="{{ asset($developer->photo) }}" alt="{{ $developer->name }}"
-                class="w-10 h-10 rounded-full object-cover object-center shrink-0 border border-slate-200 dark:border-slate-600">
-            <div>
-                <p class="text-xs font-medium text-slate-600 dark:text-slate-300">Foto actual</p>
-                <p class="text-xs text-slate-400">Subí una nueva para reemplazarla</p>
+            <div class="flex items-center gap-3 mb-3">
+                <img src="{{ asset($developer->photo) }}" alt="{{ $developer->name }}"
+                    class="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-600">
+                <div>
+                    <p class="text-xs font-medium text-slate-600 dark:text-slate-300">Foto actual</p>
+                    <p class="text-xs text-slate-400">Subí una nueva para reemplazarla</p>
+                </div>
             </div>
             @endif
+
+            <input type="file" name="photo" accept="image/*" id="photo-input"
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+            <p class="text-xs text-slate-400 mt-1">JPG, PNG o WEBP &middot; máx. 2 MB &middot; Dejá vacío para mantener la actual</p>
+            @error('photo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+
+            <div id="photo-preview" class="hidden mt-3">
+                <img id="preview-img" src="" alt="Vista previa"
+                    class="w-20 h-20 rounded-full object-cover border-2 border-brand-200 shadow">
+            </div>
         </div>
 
-        <input type="file" name="photo" accept="image/*" id="photo-input"
-            class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
-        <p class="text-xs text-slate-400 mt-1">JPG, PNG o WEBP · máx. 2 MB · Dejá vacío para mantener la actual</p>
-        @error('photo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-
-        {{-- Preview de nueva foto --}}
-        <div id="photo-preview" class="hidden mt-3">
-            <img id="preview-img" src="" alt="Vista previa"
-                class="w-20 h-20 rounded-full object-cover border-2 border-brand-200 shadow">
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Habilidades</label>
+            <input type="text" name="skills" value="{{ old('skills', $developer->skills) }}"
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <p class="text-xs text-slate-400 mt-1">Separadas por coma</p>
         </div>
-</div>
 
-<div>
-    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Habilidades</label>
-    <input type="text" name="skills" value="{{ old('skills', $developer->skills) }}"
-        class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-    <p class="text-xs text-slate-400 mt-1">Separadas por coma</p>
-</div>
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Bio</label>
+            <textarea name="bio" rows="4"
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none">{{ old('bio', $developer->bio) }}</textarea>
+        </div>
 
-<div>
-    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Bio</label>
-    <textarea name="bio" rows="4"
-        class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none">{{ old('bio', $developer->bio) }}</textarea>
-</div>
+        <div class="border-t border-slate-100 dark:border-slate-700 pt-5">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Vincular cuenta de usuario <span class="text-slate-400 font-normal">(opcional)</span>
+            </label>
+            <select name="user_id"
+                class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <option value="">Sin cuenta vinculada</option>
+                @foreach($users as $user)
+                <option value="{{ $user->id }}" {{ $developer->user_id == $user->id ? 'selected' : '' }}>
+                    {{ $user->name }} ({{ $user->email }})
+                </option>
+                @endforeach
+            </select>
+            <p class="text-xs text-slate-400 mt-1">Solo aparecen usuarios con rol "developer" disponibles.</p>
+        </div>
 
-<div class="border-t border-slate-100 dark:border-slate-700 pt-5">
-    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-        Vincular cuenta de usuario
-        <span class="text-slate-400 font-normal">(opcional)</span>
-    </label>
-    <select name="user_id"
-        class="w-full border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-        <option value="">Sin cuenta vinculada</option>
-        @foreach($users as $user)
-        <option value="{{ $user->id }}" {{ $developer->user_id == $user->id ? 'selected' : '' }}>
-            {{ $user->name }} ({{ $user->email }})
-        </option>
-        @endforeach
-    </select>
-    <p class="text-xs text-slate-400 mt-1">Solo aparecen usuarios con rol "developer" disponibles.</p>
-</div>
-
-<div class="flex gap-3 pt-2">
-    <button type="submit"
-        class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
-        Guardar cambios
-    </button>
-    <a href="{{ route('admin.developers.index') }}"
-        class="border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold px-6 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-        Cancelar
-    </a>
-</div>
-</form>
+        <div class="flex gap-3 pt-2">
+            <button type="submit"
+                class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm">
+                Guardar cambios
+            </button>
+            <a href="{{ route('admin.developers.index') }}"
+                class="border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold px-5 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm">
+                Cancelar
+            </a>
+        </div>
+    </form>
 </div>
 
 <script>

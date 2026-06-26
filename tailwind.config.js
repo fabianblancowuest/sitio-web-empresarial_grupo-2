@@ -25,8 +25,8 @@ export default {
                 ink: '#0f172a',
             },
             fontFamily: {
-                sans: ['"DM Sans"', ...defaultTheme.fontFamily.sans],
-                display: ['"Syne"', 'sans-serif'],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                display: ['Outfit', 'sans-serif'],
             },
         },
     },
